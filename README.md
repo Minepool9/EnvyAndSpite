@@ -10,7 +10,7 @@ An attempt at making an open source ultrakill level loader and editor...
 
 **Important** 
 
- 0. THE MOD IS A DEAD PROJECT! This means i wont work on it or anything, by releasing the work here on github i wish someone could make a fork continuing my project and seeing how it thrives, The entire idea of this mod is to allow people to get creative in ultrakill, it doesnt matter if im the one who publishes it but i want the project to  be always open source
+ 0. THE MOD IS A DEAD PROJECT! This means i wont work on it or anything, by releasing the work here on github i wish someone could make a fork continuing my project and seeing how it thrives, The entire idea of this mod is to allow people to get creative in ultrakill, it doesnt matter if im the one who publishes it but i want the project to  be always open source my wish is that the level editor is public in the same way the level loader is meaning anyone can make levels and share it between their friends
 
  1. [Please get this version of unity](https://unity.com/releases/editor/whats-new/2019.4.40)
 
