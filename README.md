@@ -6,6 +6,7 @@
 An attempt at making an open source ultrakill level loader and editor...
 
 **Important** 
+
  0. THE MOD IS A DEAD PROJECT! This means i wont work on it or anything, by releasing the work here on github i wish someone could make a fork continuing my project and seeing how it thrives, The entire idea of this mod is to allow people to get creative in ultrakill, it doesnt matter if im the one who publishes it but i want the project to  be always open source
 
  1. [Please get this version of unity](https://unity.com/releases/editor/whats-new/2019.4.40)
@@ -51,4 +52,4 @@ basically you need to make a prefab STRICTLY named "MapBase" and then parent eve
 
 me, this was a solo project for the most part
 
-eternalunion, the creator of rude of which inspired me to make the project after i got denied access, and also he provided the terminal bundle for me.
+eternalunion, the creator of rude (i wanted to gain access which is the envy part) of which inspired me to make the project after i got denied access (i felt spite), and also he provided the terminal bundle for me. (do you get the name of the mod now? please laugh.)
