@@ -1,6 +1,9 @@
 # EnvyAndSpite
+
 **ENVY LEADS TO SPITE**
+
 **SPITE LEADS TO MOTIVATION**
+
 **MOTIVATION LEADS TO ART**
 
 An attempt at making an open source ultrakill level loader and editor...
