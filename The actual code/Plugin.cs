@@ -15,7 +15,6 @@ namespace DoomahLevelLoader
     [BepInPlugin("doomahreal.ultrakill.levelloader", "DoomahLevelLoader", "1.0.0")]
     public class Plugin : BaseUnityPlugin
     {
-        private const string targetScene = "7b3cb6a0a342eb54dafe5552d4820eeb";
         private const KeyCode instantiateKey = KeyCode.U;
 
         private GameObject instantiatedPrefab;
@@ -65,7 +64,7 @@ namespace DoomahLevelLoader
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (scene.name == targetScene)
+            if (SceneHelper.CurrentScene == "uk_construct")
             {
                 terminalInstantiated = false; // Reset the flag when the target scene is loaded
             }
@@ -73,7 +72,7 @@ namespace DoomahLevelLoader
 
         private void OnSceneUnloaded(Scene scene)
         {
-            if (scene.name == targetScene)
+            if (SceneHelper.CurrentScene == "uk_construct")
             {
                 terminalInstantiated = false; // Reset the flag when the target scene is unloaded
             }
@@ -83,7 +82,7 @@ namespace DoomahLevelLoader
 
 		private void Update()
 		{					
-			if (SceneManager.GetActiveScene().name == targetScene && terminal != null && !terminalInstantiated)
+			if (SceneHelper.CurrentScene == "uk_construct" && terminal != null && !terminalInstantiated)
 			{
 				InstantiateTerminal();
 				terminalInstantiated = true;
