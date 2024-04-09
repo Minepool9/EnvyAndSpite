@@ -24,7 +24,7 @@ An attempt at making an open source ultrakill level loader and editor...
 
 The mod uses a prefab instead of scenes, so you dont have to manually set every value in the scene itself, the loading and spawning of enemies part works via the unity addressable system aka "load this file at the location of the running resources of the game and create this here"
 
-* [Youtube Tutorial.]()
+* [Youtube Tutorial.](https://www.youtube.com/watch?v=n5iKxAL-R6U)
 
 # HOW TO USE THE EDITOR
 
