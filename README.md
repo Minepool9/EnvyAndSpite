@@ -36,6 +36,10 @@ Unzip this and open unity hub and click the drop down arrow next to add and clic
 
 Press no once you open the project
 
+Open the package manager via the windows button on the toolbar ontop of the screen and download the ones marked with red
+
+![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/9ce6acb1-d4db-4812-b426-7d94d90faab6)
+
 # STUFF THAT WILL GET ADDED AT 1.5K DOWNLOADS
 
  1. Music manager
