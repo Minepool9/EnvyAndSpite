@@ -12,9 +12,9 @@ An attempt at making an open source ultrakill level loader and editor...
 
  1. [Please get this version of unity](https://unity.com/releases/editor/whats-new/2019.4.40)
 
- 2 This mod works only in sandbox.
+ 2. This mod works only in sandbox.
 
- 2.5 Due to importing the map as a prefab in the sandbox scene, You need to place an enemy on any place that has a floor tag on the "map" and then rebuild navmesh for all enemies to work
+ 2.5. Due to importing the map as a prefab in the sandbox scene, You need to place an enemy on any place that has a floor tag on the "map" and then rebuild navmesh for all enemies to work
 
  3. For Height references use a default unity cube with the sizes of 4 4 4, that is v1's height in unity or a capsule with 2 2 2
 
