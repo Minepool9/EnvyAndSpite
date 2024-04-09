@@ -28,9 +28,9 @@ The mod uses a prefab instead of scenes, so you dont have to manually set every 
 
 # HOW TO USE THE EDITOR
 
-* TECHNICAL DIFFCULITES
+* [PACKAGE IS HERE](https://drive.google.com/file/d/1ZZDWIZkWCuNT-HJnpTrmsyjTxnS0ZlAz/view?usp=sharing)
 
-Once you make a project, click on assets in the toolbar then click on import package and import the unity package and wait for it to unpack, then go to "Windows" in the toolbar click on package manager and download the following packages marked with red
+Once you make a project, click on assets in the toolbar then click on import package and import the unity package and wait for it to unpack, then go to "Windows" in the toolbar click on package manager and download the following packages marked with red + A PACKAGE NAMED TEXTMESH PRO 
 
 ![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/de74f050-d7bd-4925-87b8-2dea6030abdc)
 
