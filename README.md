@@ -33,6 +33,7 @@ The mod uses a prefab instead of scenes, so you dont have to manually set every 
 Unzip this and open unity hub and click the drop down arrow next to add and click from disk and select the folder and open the project it should contain the map inside of the youtube tutorial as a way to understand the editor
 
 ![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/d86cea4d-9e00-48dd-aa97-8fd10baa6208)
+
 Press no once you open the project
 
 # STUFF THAT WILL GET ADDED AT 1.5K DOWNLOADS
