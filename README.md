@@ -28,7 +28,7 @@ The mod uses a prefab instead of scenes, so you dont have to manually set every 
 
 # HOW TO USE THE EDITOR
 
-* [The required unity project.]()
+* [The required unity project.](https://drive.google.com/file/d/1o5xY9HRZh7ATEIh0JxT_UfvcNAmiQ0P_/view?usp=sharing)
 
 Unzip this and open unity hub and click the drop down arrow next to add and click from disk and select the folder and open the project it should contain the map inside of the youtube tutorial as a way to understand the editor
 
