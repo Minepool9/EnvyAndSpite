@@ -28,18 +28,7 @@ The mod uses a prefab instead of scenes, so you dont have to manually set every 
 
 # HOW TO USE THE EDITOR
 
-* [The required unity project.](https://drive.google.com/file/d/1VQIAW1WCRRY2WYPGC6L6sNw4f9PYCcnr/view?usp=sharing)
-
-Unzip this and open unity hub and click the drop down arrow next to add and click from disk and select the folder and open the project it should contain the map inside of the youtube tutorial as a way to understand the editor
-
-![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/d86cea4d-9e00-48dd-aa97-8fd10baa6208)
-
-Press no once you open the project
-
-
-90% of the time you're not gonna have to do Open the package manager via the windows button on the toolbar ontop of the screen and download the ones marked with red
-
-![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/9ce6acb1-d4db-4812-b426-7d94d90faab6)
+* TECHNICAL DIFFCULITES PLEASE WAIT
 
 # STUFF THAT WILL GET ADDED AT 1.5K DOWNLOADS
 
