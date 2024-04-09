@@ -26,7 +26,11 @@ The mod uses a prefab instead of scenes, so you dont have to manually set every 
 
 * [Youtube Tutorial.]()
 
-* [Example unity project.]()
+# HOW TO USE THE EDITOR
+
+* [The required unity project.]()
+
+Unzip this and open unity hub and click the drop down arrow next to add and click from disk and select the folder and open the project it should contain the map inside of the youtube tutorial as a way to understand the editor
 
 # STUFF THAT WILL GET ADDED AT 1.5K DOWNLOADS
 
