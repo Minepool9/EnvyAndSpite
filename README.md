@@ -34,7 +34,7 @@ The mod uses a prefab instead of scenes, so you dont have to manually set every 
 
 **NOTE:They are both required.**
 
-Once you make a project, click on Window button on the toolbar thats on the top of the screen and click package manager, proceed to install the following list
+Once you make a project, click on Window button on the toolbar thats on the top of the screen and click package manager, proceed to install the following items marked in red + textmeshpro
 
 ![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/de74f050-d7bd-4925-87b8-2dea6030abdc)
 
