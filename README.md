@@ -34,6 +34,8 @@ Alright, first off you're gonna want to go get both [unity hub](<https://unity.c
 
 Then run the unity hub exe, register an account with unity and make a personal licence (free) you can check out this [tutorial](<https://www.youtube.com/watch?v=gg9Mb9xH7MY>) (watch until 1:22) and after that you should be ready to go, but if you get a window like the first image click on "locate existing install" and depending on where you installed the editor it's default location is "C:\Program Files\Unity 2019.4.40f1" and set it to that or to the editor folder if that doesnt work  then click the arrow next to "Add" and select from disk and then unzip the unity project from the repo and just select the folder from it (it should be called "huhadsdas - Copy" select that)
 
+[It is recommended to check the #how-to-setup-the-editor channel from the discord server for any other info like moving around the unity editor and other info](https://discord.gg/RY8J67neJ9)
+
 # STUFF THAT WILL GET ADDED AT 1.5K DOWNLOADS
 
  ~~1. Music manager~~ check pins of the #user-tutorials in the discord server
