@@ -32,7 +32,7 @@ The mod uses a prefab instead of scenes, so you dont have to manually set every 
 
 * [Assets and prefabs package](https://drive.google.com/file/d/1yokKWlKaLgH3NwOk2qx34OQh2tSuDhz-/view?usp=sharing)
 
-**NOTE:They are both required. **
+**NOTE:They are both required.**
 
 Once you make a project, click on Window button on the toolbar thats on the top of the screen and click package manager, proceed to install the following list
 
