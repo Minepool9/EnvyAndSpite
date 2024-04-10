@@ -34,9 +34,17 @@ The mod uses a prefab instead of scenes, so you dont have to manually set every 
 
 **NOTE:They are both required. **
 
-Once you make a project, click on assets in the toolbar then click on import package and import both of the unity packages and wait for it to unpack, then go to "Windows" in the toolbar click on package manager and download the following packages marked with red + A PACKAGE NAMED TEXTMESH PRO 
+Once you make a project, click on Window button on the toolbar thats on the top of the screen and click package manager, proceed to install the following list
 
 ![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/de74f050-d7bd-4925-87b8-2dea6030abdc)
+
+Then click Assets and click "Import package" and click the button that pops out from it's menu, Select one of the packages you downloaded (the scripts and prefab) and open it and wait for it to load then click import, repeat for the other package
+
+Create a folder in the assets folder by right clicking an empty spaces where the folder icons are, and create a folder named exactly "Editor" Afterwards download the [assetbundle script](https://github.com/Minepool9/EnvyAndSpite/blob/main/CreateAssetBundles.cs) and put it inside of the editor folder 
+
+Finally, Download [The tag manager](https://github.com/Minepool9/EnvyAndSpite/blob/main/TagManager.asset) file and open the project's location and go to "Projectsettings" and replace the tagmanager file there with the one you downloaded here.
+
+![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/a997f079-2332-441d-9bb9-dd397faced7c)
 
 
 # STUFF THAT WILL GET ADDED AT 1.5K DOWNLOADS
