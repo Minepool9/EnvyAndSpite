@@ -41,7 +41,7 @@ Once you make a project, click on assets in the toolbar then click on import pac
 
 # STUFF THAT WILL GET ADDED AT 1.5K DOWNLOADS
 
- 1. Music manager
+ ~~1. Music manager~~ check pins of the #user-tutorials in the discord server
 
  2. Radience support
 
@@ -54,3 +54,6 @@ Once you make a project, click on assets in the toolbar then click on import pac
 me, this was a solo project for the most part
 
 eternalunion, the creator of rude (i wanted to gain access which is the envy part) of which inspired me to make the project after i got denied access (i felt spite), and also he provided the terminal bundle for me + ultrakill's scripts. (do you get the name of the mod now? please laugh.)
+
+
+[Join the discord.](https://discord.gg/RY8J67neJ9)
