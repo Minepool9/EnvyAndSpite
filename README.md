@@ -28,24 +28,11 @@ The mod uses a prefab instead of scenes, so you dont have to manually set every 
 
 # HOW TO USE THE EDITOR
 
-* [Scripts package](https://drive.google.com/file/d/15RPcbHclhDYlLTH_V4Epg_tj0ap0UKrO/view?usp=sharing)
+* [Unity project template](https://drive.google.com/file/d/1bQqtKBc1EgdyeqjoeizW1McUwThXjN_5/view?usp=sharing)
 
-* [Assets and prefabs package](https://drive.google.com/file/d/1yokKWlKaLgH3NwOk2qx34OQh2tSuDhz-/view?usp=sharing)
+Alright, first off you're gonna want to go get both [unity hub](<https://unity.com/download>) and [unity 2019 4 40](<https://unity.com/releases/editor/whats-new/2019.4.40>) and the unity project from the [repo](<https://github.com/Minepool9/EnvyAndSpite>)  and run first the unity editor installer and install that
 
-**NOTE:They are both required.**
-
-Once you make a project, click on Window button on the toolbar thats on the top of the screen and click package manager, proceed to install the following items marked in red + textmeshpro
-
-![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/de74f050-d7bd-4925-87b8-2dea6030abdc)
-
-Then click Assets and click "Import package" and click the button that pops out from it's menu, Select one of the packages you downloaded (the scripts and prefab) and open it and wait for it to load then click import, repeat for the other package
-
-Create a folder in the assets folder by right clicking an empty spaces where the folder icons are, and create a folder named exactly "Editor" Afterwards download the [assetbundle script](https://github.com/Minepool9/EnvyAndSpite/blob/main/CreateAssetBundles.cs) and put it inside of the editor folder 
-
-Finally, Download [The tag manager](https://github.com/Minepool9/EnvyAndSpite/blob/main/TagManager.asset) file and open the project's location and go to "Projectsettings" and replace the tagmanager file there with the one you downloaded here.
-
-![image](https://github.com/Minepool9/EnvyAndSpite/assets/97184060/a997f079-2332-441d-9bb9-dd397faced7c)
-
+Then run the unity hub exe, register an account with unity and make a personal licence (free) you can check out this [tutorial](<https://www.youtube.com/watch?v=gg9Mb9xH7MY>) (watch until 1:22) and after that you should be ready to go, but if you get a window like the first image click on "locate existing install" and depending on where you installed the editor it's default location is "C:\Program Files\Unity 2019.4.40f1" and set it to that or to the editor folder if that doesnt work  then click the arrow next to "Add" and select from disk and then unzip the unity project from the repo and just select the folder from it (it should be called "huhadsdas - Copy" select that)
 
 # STUFF THAT WILL GET ADDED AT 1.5K DOWNLOADS
 
