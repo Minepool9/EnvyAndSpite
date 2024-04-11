@@ -8,6 +8,8 @@
 
 An attempt at making an open source ultrakill level loader and editor...
 
+[Skip to setting up the editor](https://github.com/Minepool9/EnvyAndSpite?tab=readme-ov-file#how-to-use-the-editor)
+
 **Important** 
 
  1. [Please get this version of unity](https://unity.com/releases/editor/whats-new/2019.4.40)
