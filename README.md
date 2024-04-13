@@ -24,13 +24,13 @@ An attempt at making an open source ultrakill level loader and editor...
 
 # HOW IT WORKS
 
-The mod uses a prefab instead of scenes, so you dont have to manually set every value in the scene itself, the loading and spawning of enemies part works via the unity addressable system aka "load this file at the location of the running resources of the game and create this here"
+~~The mod uses a prefab instead of scenes,so you dont have to manually set every value in the scene itself,~~ (No longer the case) the loading and spawning of enemies part works via the unity addressable system aka "load this file at the location of the running resources of the game and create this here"
 
 * [Youtube Tutorial.](https://www.youtube.com/watch?v=n5iKxAL-R6U)
 
 # HOW TO USE THE EDITOR
 
-* [Unity project template](https://drive.google.com/file/d/1bQqtKBc1EgdyeqjoeizW1McUwThXjN_5/view?usp=sharing)
+* [Unity project template](https://drive.google.com/file/d/1QBnkJNgwGD02WcSyJmYwHcTURLErTkRj/view?usp=sharing)
 
 Alright, first off you're gonna want to go get both [unity hub](<https://unity.com/download>) and [unity 2019 4 40](<https://unity.com/releases/editor/whats-new/2019.4.40>) and the unity project from the [repo](<https://github.com/Minepool9/EnvyAndSpite>)  and run first the unity editor installer and install that
 
