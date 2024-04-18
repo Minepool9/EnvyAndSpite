@@ -9,13 +9,30 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
     <PackageReference Include="UnityEngine.Modules" Version="2019.4.40" IncludeAssets="compile" />
+	    <PackageReference Include="Krafs.Publicizer" Version="2.2.1">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <Publicize Include="Assembly-CSharp" />
+	<Reference Include="lib\Assembly-CSharp.dll" />
+	<Reference Include="lib\0Harmony.dll" />
+	<Reference Include="lib\BepInEx.dll" />
+	<Reference Include="lib\UnityEngine.AssetBundleModule.dll" />
+	<Reference Include="lib\UnityEngine.dll" />
+	<Reference Include="lib\UnityEngine.UI.dll" />
+	<Reference Include="lib\UnityUIExtensions.dll" />
+	<Reference Include="lib\UnityEngine.CoreModule.dll" />
+	<Reference Include="lib\Unity.Addressables.dll" />
+	<Reference Include="lib\Unity.ResourceManager.dll" />
+	<Reference Include="lib\Unity.TextMeshPro.dll" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <EmbeddedResource Include="terminal.bundle">
     </EmbeddedResource>
@@ -23,23 +40,5 @@
 
 	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<Reference Include="Assembly-CSharp">
-			<HintPath>libs\Assembly-CSharp.dll</HintPath>
-		</Reference>
-		<Reference Include="Unity.Addressables">
-			<HintPath>libs\Unity.Addressables.dll</HintPath>
-		</Reference>
-		<Reference Include="Unity.ResourceManager">
-			<HintPath>libs\Unity.ResourceManager.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.AssetBundleModule">
-			<HintPath>libs\UnityEngine.AssetBundleModule.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.UI">
-			<HintPath>libs\UnityEngine.UI.dll</HintPath>
-		</Reference>
 	</ItemGroup>
 </Project>

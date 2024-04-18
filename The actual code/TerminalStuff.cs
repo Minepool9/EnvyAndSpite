@@ -2,32 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 namespace DoomahLevelLoader
 {
     public class EnvyandSpiteterimal : MonoBehaviour
     {
-        // Singleton instance
         private static EnvyandSpiteterimal instance;
 
-        // Reference to UI elements
         public Text levelname;
         public Text loadbutton;
         public Button load;
         public Button gofowardinlist;
         public Button gobackinlist;
+		public Image Levelpicture;
 
-        // Static property to access the singleton instance
         public static EnvyandSpiteterimal Instance
         {
             get
             {
-                // If the instance doesn't exist, find it in the scene
                 if (instance == null)
                 {
                     instance = FindObjectOfType<EnvyandSpiteterimal>();
 
-                    // If it still doesn't exist, log an error
                     if (instance == null)
                     {
                         Debug.LogError("EnvyandSpiteterimal instance not found in the scene.");
@@ -53,33 +50,29 @@ namespace DoomahLevelLoader
         // Method to handle the "load" button click event
         private void OnLoadButtonClick()
         {
-            // Call the InstantiatePrefab method directly from the Plugin class
-            Plugin.Instance.InstantiatePrefab();
+			Loaderscene.LoadScene();
         }
 
         // Method to handle the "gofoward" button click event
         private void OnGoForwardButtonClick()
         {
             // Call the MoveToNextFile method from the Loader class
-            Loader.MoveToNextFile();
-			Plugin.Instance.firstTimeFlag = true;
+            Loaderscene.NextBundle();
+			UpdateLevelName();
         }
 
         // Method to handle the "goback" button click event
         private void OnGoBackButtonClick()
         {
             // Call the MoveToPreviousFile method from the Loader class
-            Loader.MoveToPreviousFile();
-			Plugin.Instance.firstTimeFlag = true;
+            Loaderscene.PreviousBundle();
+			UpdateLevelName();
         }
 
-        // Method to update the text of levelname UI element with the current file name
-        public void UpdateLevelName()
-        {
-            if (Loader.GetCurrentFileName() != null)
-            {
-                levelname.text = Loader.GetCurrentFileName();
-            }
-        }
+		public void UpdateLevelName()
+		{
+			string fileName = Path.GetFileNameWithoutExtension(Loaderscene.scenePath);
+			levelname.text = fileName;
+		}
     }
 }
