@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System;
 
@@ -29,81 +29,71 @@ namespace DoomahLevelLoader.UnityComponents
 
         private bool _activated = false;
 
-		public void Activate()
-		{
-			if (oneTime && _activated)
-				return;
+        public void Activate()
+        {
+            if (oneTime && _activated)
+                return;
 
-			_activated = true;
+            _activated = true;
 
-			GameObject targetObject = Addressables.LoadAssetAsync<GameObject>(targetAddress).WaitForCompletion();
-			if (targetObject == null)
-			{
-				Debug.LogWarning($"Tried to load asset at address {targetAddress}, but it does not exist");
-				enabled = false;
-				return;
-			}
+            GameObject targetObject = Addressables.LoadAssetAsync<GameObject>(targetAddress).WaitForCompletion();
+            if (targetObject == null)
+            {
+                Debug.LogWarning($"Tried to load asset at address {targetAddress}, but it does not exist");
+                enabled = false;
+                return;
+            }
 
-			GameObject instantiatedObject = Instantiate(targetObject, transform.position, transform.rotation, transform);
+            GameObject instantiatedObject = Instantiate(targetObject, transform.position, transform.rotation, transform);
 
-			eid = instantiatedObject.GetComponent<EnemyIdentifier>();
+            eid = instantiatedObject.GetComponent<EnemyIdentifier>();
 
-			if (moveToParent)
-				instantiatedObject.transform.SetParent(transform.parent, true);
+            // If eid is still null, try getting the component from the first child
+            if (eid == null && instantiatedObject.transform.childCount > 0)
+            {
+                eid = instantiatedObject.transform.GetChild(0).GetComponent<EnemyIdentifier>();
+            }
 
-			PostInstantiate(instantiatedObject);
+            if (moveToParent)
+                instantiatedObject.transform.SetParent(transform.parent, true);
 
-			if (IsBoss)
-			{
-				if (targetAddress == "Assets/Prefabs/Enemies/StatueEnemy.prefab")
-				{
-					// Get the child object of the instantiated prefab
-					var childWithBossBar = instantiatedObject.transform.GetChild(0).gameObject;
-					// Get the EnemyIdentifier component from the child object
-					eid = childWithBossBar.GetComponent<EnemyIdentifier>();
-					BossHealthBar bossHealthBar = childWithBossBar.AddComponent<BossHealthBar>();
-					if (!string.IsNullOrEmpty(BossName))
-					{
-						bossHealthBar.bossName = BossName;
-					}
-				}
-				else
-				{
-					// For other enemies, add BossHealthBar normally
-					BossHealthBar bossHealthBar = instantiatedObject.AddComponent<BossHealthBar>();
-					if (!string.IsNullOrEmpty(BossName))
-					{
-						bossHealthBar.bossName = BossName;
-					}
-				}
-			}
+            PostInstantiate(instantiatedObject);
 
-			if (eid != null && IsSanded)
-				eid.Sandify(false);
+            if (eid != null && IsBoss)
+            {
+                BossHealthBar bossHealthBar = eid.gameObject.AddComponent<BossHealthBar>();
+                if (!string.IsNullOrEmpty(BossName))
+                {
+                    bossHealthBar.bossName = BossName;
+                }
+            }
 
-			if (eid != null && IsPuppet)
-			{
-				eid.PuppetSpawn();
-				eid.puppet = true;
-			}
+            if (eid != null && IsSanded)
+                eid.Sandify(false);
 
-			if (eid != null && IsRadient)
-			{
-				eid.radianceTier = RadienceTier;
-				eid.healthBuffModifier = HealthTier;
-				eid.speedBuffModifier = SpeedTier;
-				eid.damageBuffModifier = DamageTier;
-				eid.BuffAll();
-			}
+            if (eid != null && IsPuppet)
+            {
+                eid.PuppetSpawn();
+                eid.puppet = true;
+            }
 
-			if (destroyThis)
-			{
-				Destroy(gameObject);
-				gameObject.SetActive(false);
-			}
+            if (eid != null && IsRadient)
+            {
+                eid.radianceTier = RadienceTier;
+                eid.healthBuffModifier = HealthTier;
+                eid.speedBuffModifier = SpeedTier;
+                eid.damageBuffModifier = DamageTier;
+                eid.BuffAll();
+            }
 
-			enabled = false;
-		}
+            if (destroyThis)
+            {
+                Destroy(gameObject);
+                gameObject.SetActive(false);
+            }
+
+            enabled = false;
+        }
         protected virtual void PostInstantiate(GameObject instantiatedObject) { }
     }
 }
