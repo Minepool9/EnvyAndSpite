@@ -15,7 +15,9 @@ namespace DoomahLevelLoader
         public Button load;
         public Button gofowardinlist;
         public Button gobackinlist;
-		public Image Levelpicture;
+        public Image Levelpicture;
+        public Text FrownyFace;
+        public Button Discord;
 
         public static EnvyandSpiteterimal Instance
         {
@@ -36,43 +38,42 @@ namespace DoomahLevelLoader
 
         private void Start()
         {
-            // Add a listener for the "load" button's click event
             load.onClick.AddListener(OnLoadButtonClick);
-            
-            // Add listeners for the "gofoward" and "goback" buttons
+
             gofowardinlist.onClick.AddListener(OnGoForwardButtonClick);
             gobackinlist.onClick.AddListener(OnGoBackButtonClick);
-            
-            // Set the initial text of levelname
+
+            UpdateLevelName();
+
+            Discord.onClick.AddListener(OnDiscordButtonClick);
+        }
+
+        private void OnLoadButtonClick()
+        {
+            Loaderscene.LoadScene();
+        }
+
+        private void OnGoForwardButtonClick()
+        {
+            Loaderscene.NextBundle();
             UpdateLevelName();
         }
 
-        // Method to handle the "load" button click event
-        private void OnLoadButtonClick()
-        {
-			Loaderscene.LoadScene();
-        }
-
-        // Method to handle the "gofoward" button click event
-        private void OnGoForwardButtonClick()
-        {
-            // Call the MoveToNextFile method from the Loader class
-            Loaderscene.NextBundle();
-			UpdateLevelName();
-        }
-
-        // Method to handle the "goback" button click event
         private void OnGoBackButtonClick()
         {
-            // Call the MoveToPreviousFile method from the Loader class
             Loaderscene.PreviousBundle();
-			UpdateLevelName();
+            UpdateLevelName();
         }
 
-		public void UpdateLevelName()
-		{
-			string fileName = Path.GetFileNameWithoutExtension(Loaderscene.scenePath);
-			levelname.text = fileName;
-		}
+        private void OnDiscordButtonClick()
+        {
+            Application.OpenURL("https://discord.gg/RY8J67neJ9");
+        }
+
+        public void UpdateLevelName()
+        {
+            string fileName = Path.GetFileNameWithoutExtension(Loaderscene.scenePath);
+            levelname.text = fileName;
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace DoomahLevelLoader
     public static class Loaderscene
     {
         public static AssetBundle[] loadedBundles;
-        private static int currentBundleIndex = 0; // Track the current index of the loaded bundles
+        private static int currentBundleIndex = 0;
         public static string scenePath;
 
         public static void LoadAssetBundles()
