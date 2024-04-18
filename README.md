@@ -1,6 +1,6 @@
 # HOW TO INSTALL EDITOR
 
-* [Project download](https://drive.google.com/file/d/1QBnkJNgwGD02WcSyJmYwHcTURLErTkRj/view?usp=sharing)
+* [Project download](https://drive.google.com/file/d/1wbMUhWqHTl4JO6Hp9KdxI1h6J0WL15OE/view?usp=sharing)
 
 Alright, first off you're gonna want to go get both [unity hub](<https://unity.com/download>) and [unity 2019 4 40](<https://unity.com/releases/editor/whats-new/2019.4.40>) and the unity project from the [repo](<https://github.com/Minepool9/EnvyAndSpite>)  and run first the unity editor installer and install that
 
