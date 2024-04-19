@@ -3,42 +3,67 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Threading.Tasks;
-using HarmonyLib;
-using System.Linq;
-using UnityEngine.AddressableAssets.ResourceLocators;
-using System;
 
-public class ShaderManager
+public static class ShaderManager
 {
-	internal static Dictionary<string, Shader> shaderNameMap = new Dictionary<string, Shader>();
+    private static Shader unlitShader;
+    private static Shader vertexLitShader;
+    private static Shader transparentShader;
 
-	public static void Something()
-	{
-		Addressables.InitializeAsync().WaitForCompletion();
-		foreach (string addressEntry in ((ResourceLocationMap)Addressables.ResourceLocators.First()).Keys)
-		{
-			  if (!addressEntry.EndsWith(".shader"))
-				continue;
+    private static Dictionary<string, Shader> shaderDictionary;
 
-			  Shader ingameShader = Addressables.LoadAsset<Shader>(addressEntry).WaitForCompletion();
-			  if (ingameShader == null)
-				continue;
+    public static async Task LoadShaders()
+    {
+        AsyncOperationHandle<Shader> unlitHandle = Addressables.LoadAssetAsync<Shader>("Assets/Shaders/Main/ULTRAKILL-unlit.shader");
+        await unlitHandle.Task;
+        unlitShader = unlitHandle.Result;
 
-			  shaderNameMap[ingameShader.name] = ingameShader;
-		}
-		Debug.Log("Something?");
-	}
+        AsyncOperationHandle<Shader> vertexLitHandle = Addressables.LoadAssetAsync<Shader>("Assets/Shaders/Main/ULTRAKILL-vertexlit.shader");
+        await vertexLitHandle.Task;
+        vertexLitShader = vertexLitHandle.Result;
+        
+        AsyncOperationHandle<Shader> transparentHandle = Addressables.LoadAssetAsync<Shader>("Assets/Shaders/Transparent/ULTRAKILL-vertexlit-transparent-zwrite.shader");
+        await transparentHandle.Task;
+        transparentShader = transparentHandle.Result;
 
-	[HarmonyPatch(typeof(Material), MethodType.Constructor, new Type[] { typeof(Material) })]
-	[HarmonyPostfix]
-	private static void SwapShader(Material __instance)
-	{
-		if (__instance.shader == null)
-			return;
+        shaderDictionary = new Dictionary<string, Shader>
+        {
+            { "ULTRAKILL/VERTEXLIT", vertexLitShader },
+            { "Standard", unlitShader },
+            { "ULTRAKILL/UNLIT", unlitShader },
+            { "ULTRAKILL/TRANSPARENT", transparentShader },
+        };
+    }
 
-		if (!shaderNameMap.TryGetValue(__instance.shader.name, out Shader ingameShader) || __instance.shader == ingameShader)
-			return;
+    public static void ApplyShaders(GameObject[] allGameObjects)
+    {
+        foreach (GameObject go in allGameObjects)
+        {
+            MeshRenderer[] meshRenderers = go.GetComponentsInChildren<MeshRenderer>(true);
 
-		__instance.shader = ingameShader;
-	}
+            foreach (MeshRenderer renderer in meshRenderers)
+            {
+                if (renderer.gameObject.name == "Quad")
+                {
+                    continue;
+                }
+
+                if (shaderDictionary.ContainsKey(renderer.material.shader.name))
+                {
+                    Shader shader = shaderDictionary[renderer.material.shader.name];
+                    ApplyShaderToRenderer(renderer, shader);
+                }
+            }
+        }
+    }
+
+    private static void ApplyShaderToRenderer(MeshRenderer renderer, Shader shader)
+    {
+        Material[] materials = renderer.materials;
+        foreach (Material material in materials)
+        {
+            material.shader = shader;
+        }
+        renderer.materials = materials;
+    }
 }
