@@ -22,7 +22,7 @@ namespace DoomahLevelLoader
 		
         public static Plugin Instance => _instance;
 
-        private async Task Awake()
+        private void Awake()
         {
             Logger.LogInfo("doomahreal.ultrakill.levelloader is loaded!");
             Loaderscene.Setup();
@@ -36,8 +36,9 @@ namespace DoomahLevelLoader
 			Loaderscene.ExtractSceneName();
 			
             SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.sceneUnloaded += OnSceneUnloaded;		
-			await ShaderManager.LoadShaders();
+            SceneManager.sceneUnloaded += OnSceneUnloaded;	
+
+			ShaderManager.Something();
         }
 
         private void OnDestroy()
@@ -66,7 +67,6 @@ namespace DoomahLevelLoader
                 {
                     Debug.LogWarning("Main camera not found in the scene.");
                 }		
-				ShaderManager.ApplyShaders(SceneManager.GetActiveScene().GetRootGameObjects());
             }
 			else
 			{
