@@ -48,20 +48,23 @@ namespace DoomahLevelLoader
             Discord.onClick.AddListener(OnDiscordButtonClick);
         }
 
+
         private void OnLoadButtonClick()
         {
-            Loaderscene.LoadScene();
+            Loaderscene.Loadscene();
         }
 
         private void OnGoForwardButtonClick()
         {
-            Loaderscene.NextBundle();
+            Loaderscene.MoveToNextAssetBundle();
+			Loaderscene.ExtractSceneName();
             UpdateLevelName();
         }
 
         private void OnGoBackButtonClick()
         {
-            Loaderscene.PreviousBundle();
+            Loaderscene.MoveToPreviousAssetBundle();
+			Loaderscene.ExtractSceneName();
             UpdateLevelName();
         }
 
@@ -72,8 +75,7 @@ namespace DoomahLevelLoader
 
         public void UpdateLevelName()
         {
-            string fileName = Path.GetFileNameWithoutExtension(Loaderscene.scenePath);
-            levelname.text = fileName;
+            levelname.text = Loaderscene.LoadedSceneName;
         }
     }
 }

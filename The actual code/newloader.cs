@@ -1,103 +1,114 @@
-﻿using BepInEx;
+﻿using System;
+using System.IO;
+using System.IO.Compression;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using HarmonyLib;
-using Logic;
+using System.Collections.Generic;
+using BepInEx;
 
 namespace DoomahLevelLoader
 {
     public static class Loaderscene
     {
-        public static AssetBundle[] loadedBundles;
-        private static int currentBundleIndex = 0;
-        public static string scenePath;
+        private static List<AssetBundle> loadedAssetBundles = new List<AssetBundle>();
+        private static int currentAssetBundleIndex = 0;
 
-        public static void LoadAssetBundles()
-        {
-            string directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string[] bundlePaths = Directory.GetFiles(directory, "*.doomah");
+        public static string LoadedSceneName { get; private set; }
 
-            loadedBundles = new AssetBundle[bundlePaths.Length];
-
-            for (int i = 0; i < bundlePaths.Length; i++)
-            {
-                loadedBundles[i] = AssetBundle.LoadFromFile(bundlePaths[i]);
-            }
-        }
-
-		public static string ExtractScene()
+		public static void Setup()
 		{
-			if (loadedBundles.Length == 0)
-				return "";
+			string executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+			string directoryPath = Path.GetDirectoryName(executablePath);
+			string unpackedLevelsPath = Path.Combine(directoryPath, "UnpackedLevels");
 
-			currentBundleIndex = Mathf.Clamp(currentBundleIndex, 0, loadedBundles.Length - 1);
-
-			while (true)
+			if (!Directory.Exists(unpackedLevelsPath))
 			{
-				AssetBundle currentBundle = loadedBundles[currentBundleIndex];
+				Directory.CreateDirectory(unpackedLevelsPath);
+			}
 
-				if (currentBundle.isStreamedSceneAssetBundle && currentBundle.GetAllScenePaths().Length != 0)
+			string[] doomahFiles = Directory.GetFiles(directoryPath, "*.doomah");
+			foreach (string doomahFile in doomahFiles)
+			{
+				string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(doomahFile);
+				string levelFolderPath = Path.Combine(unpackedLevelsPath, fileNameWithoutExtension);
+
+				if (!Directory.Exists(levelFolderPath))
 				{
-					return currentBundle.GetAllScenePaths().First();
+					ZipFile.ExtractToDirectory(doomahFile, levelFolderPath);
 				}
 
-				NextBundle();
-
-				if (currentBundleIndex == 0)
-				{
-					Debug.LogError("No scenes found in any loaded bundles.");
-					return "";
-				}
+				LoadAssetBundle(levelFolderPath);
 			}
 		}
 
 
-        public static void LoadScene()
+        private static bool IsZipFile(string filePath)
         {
-            if (!string.IsNullOrEmpty(scenePath))
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(scenePath);
-            }
-            else
-            {
-                Debug.LogError("Scene not found or loaded.");
+                byte[] header = new byte[4];
+                fs.Read(header, 0, 4);
+                return BitConverter.ToUInt32(header, 0) == 0x504B0304;
             }
         }
 
-        public static void NextBundle()
+        private static void LoadAssetBundle(string folderPath)
         {
-            currentBundleIndex = (currentBundleIndex + 1) % loadedBundles.Length;
-            scenePath = ExtractScene();
-        }
+            string[] bundleFiles = Directory.GetFiles(folderPath, "*.bundle");
 
-        public static void PreviousBundle()
-        {
-            currentBundleIndex = (currentBundleIndex - 1 + loadedBundles.Length) % loadedBundles.Length;
-            scenePath = ExtractScene();
-        }
-
-        public static void FixVariables()
-        {
-            MonoSingleton<MapVarManager>.Instance.ReloadMapVars();
-        }
-
-        [HarmonyPatch(typeof(SceneHelper), "RestartScene")]
-        public static class SceneHelper_RestartScene_Patch
-        {
-            [HarmonyPrefix]
-            public static bool Prefix()
+            foreach (string bundleFile in bundleFiles)
             {
-                if (Plugin.IsCustomLevel)
+                AssetBundle assetBundle = AssetBundle.LoadFromFile(bundleFile);
+                if (assetBundle != null)
                 {
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(scenePath);
-                    Loaderscene.FixVariables();
-                    return false;
+                    loadedAssetBundles.Add(assetBundle);
                 }
-                return true;
             }
+        }
+
+        public static void SelectAssetBundle(int index)
+        {
+            if (index >= 0 && index < loadedAssetBundles.Count)
+            {
+                currentAssetBundleIndex = index;
+            }
+        }
+
+        public static void ExtractSceneName()
+        {
+            if (loadedAssetBundles.Count > 0)
+            {
+                string[] scenePaths = loadedAssetBundles[currentAssetBundleIndex].GetAllScenePaths();
+                if (scenePaths.Length > 0)
+                {
+                    string sceneName = Path.GetFileNameWithoutExtension(scenePaths[0]);
+                    LoadedSceneName = sceneName;
+                }
+            }
+        }
+		
+		public static void Loadscene()
+		{
+			if (!string.IsNullOrEmpty(LoadedSceneName))
+			{
+				SceneManager.LoadSceneAsync(LoadedSceneName).completed += OnSceneLoadComplete;
+				SceneHelper.ShowLoadingBlocker();
+			}
+		}
+
+		private static void OnSceneLoadComplete(AsyncOperation asyncOperation)
+		{
+			SceneHelper.DismissBlockers();
+		}
+
+        public static void MoveToNextAssetBundle()
+        {
+            currentAssetBundleIndex = (currentAssetBundleIndex + 1) % loadedAssetBundles.Count;
+        }
+
+        public static void MoveToPreviousAssetBundle()
+        {
+            currentAssetBundleIndex = (currentAssetBundleIndex - 1 + loadedAssetBundles.Count) % loadedAssetBundles.Count;
         }
     }
 }

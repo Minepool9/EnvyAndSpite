@@ -7,6 +7,7 @@ using System;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Threading.Tasks;
+using Logic;
 
 namespace DoomahLevelLoader
 {
@@ -14,6 +15,7 @@ namespace DoomahLevelLoader
     public class Plugin : BaseUnityPlugin
     {
         private AssetBundle terminal;
+		private bool terminalInstantiated = false;
         private Shader loadedShader;
 		public static bool IsCustomLevel = false;
         private static Plugin _instance;
@@ -23,33 +25,35 @@ namespace DoomahLevelLoader
         private async Task Awake()
         {
             Logger.LogInfo("doomahreal.ultrakill.levelloader is loaded!");
-            Loaderscene.LoadAssetBundles();
+            Loaderscene.Setup();
             terminal = Loader.LoadTerminal();
 			
             _instance = this;
 
             Harmony val = new Harmony("doomahreal.ultrakill.levelloader");
             val.PatchAll();
-
-            Loaderscene.scenePath = Loaderscene.ExtractScene();
 			
-            SceneManager.sceneLoaded += OnSceneLoaded;			
+			Loaderscene.ExtractSceneName();
+			
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;		
 			await ShaderManager.LoadShaders();
         }
 
         private void OnDestroy()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (SceneHelper.CurrentScene == "uk_construct")
             {
-				InstantiateTerminal();
+				terminalInstantiated = false;
 				Debug.Log("Is scene alright parthner");
             }
-            if (scene.path == Loaderscene.scenePath)
+            if (scene.name == Loaderscene.LoadedSceneName)
             {
                 SceneHelper.CurrentScene = SceneManager.GetActiveScene().name;
                 Camera mainCamera = Camera.main;
@@ -63,14 +67,35 @@ namespace DoomahLevelLoader
                     Debug.LogWarning("Main camera not found in the scene.");
                 }		
 				ShaderManager.ApplyShaders(SceneManager.GetActiveScene().GetRootGameObjects());
-				Loaderscene.FixVariables();
             }
 			else
 			{
 				IsCustomLevel = false;
 			}
         }
-
+		
+		private void OnSceneUnloaded(Scene scene)
+        {
+            if (SceneHelper.CurrentScene == "uk_construct")
+            {
+                terminalInstantiated = false; 
+            }
+        }
+		
+        public static void FixVariables()
+        {
+            MapVarManager.Instance.ReloadMapVars();
+        }
+		
+		private void Update()
+        {
+            if (SceneHelper.CurrentScene == "uk_construct" && terminal != null && !terminalInstantiated)
+            {
+                InstantiateTerminal();
+                terminalInstantiated = true;
+            }
+        }
+		
 		private void InstantiateTerminal()
 		{
 			var shaderHandle = Addressables.LoadAssetAsync<Shader>("Assets/Shaders/Main/ULTRAKILL-vertexlit.shader");

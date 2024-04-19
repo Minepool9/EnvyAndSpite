@@ -8,14 +8,13 @@ using HarmonyLib;
 
 	public class TriggerZoneBehavior : MonoBehaviour
 	{
-		public float delay = 2f; // Adjust the delay time as needed
-		public float activationDelay = 0.1f; // Delay between activating each child
-		private bool hasActivated = false; // Flag to track if activation has occurred
-		private List<Transform> ignoreList = new List<Transform>(); // List to store ignored children
+		public float delay = 2f;
+		public float activationDelay = 0.1f;
+		private bool hasActivated = false;
+		private List<Transform> ignoreList = new List<Transform>(); 
 
 		private void Start()
 		{
-		    // Set the collider to be a trigger
 			Collider collider = GetComponent<Collider>();
 			if (collider != null)
 			{
@@ -37,13 +36,16 @@ using HarmonyLib;
 		{
 			while (true)
 			{
-				bool allChildrenActivated = true; // Flag to track if all eligible children are activated
+				bool allChildrenActivated = true;
 				foreach (Transform child in transform)
 				{
+					if (child == null)
+						continue;
+
 					if (!ignoreList.Contains(child) && !child.name.Contains("Gore Zone") && !child.gameObject.activeSelf)
 					{
-						allChildrenActivated = false; // Set flag to false if there are still eligible children to activate
-						if (child.name != "NoPass(Clone)" || child.GetComponent<DoomahLevelLoader.UnityComponents.AddressableReplacer>() == null)
+						allChildrenActivated = false; 
+						if (child.name != null && (child.name != "NoPass(Clone)" || child.GetComponent<DoomahLevelLoader.UnityComponents.AddressableReplacer>() == null))
 						{
 							yield return new WaitForSeconds(activationDelay);
 						}
@@ -55,7 +57,7 @@ using HarmonyLib;
 						ignoreList.Add(child);
 					}
 				}
-				// If all eligible children are activated, break the loop
+
 				if (allChildrenActivated)
 				{
 					break;

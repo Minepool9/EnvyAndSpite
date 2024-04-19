@@ -6,7 +6,6 @@ namespace DoomahLevelLoader.UnityComponents
     {
         protected override void PostInstantiate(GameObject instantiatedObject)
         {
-            // Copy BoxCollider from the original object to the instantiated object
             BoxCollider originalCollider = GetComponent<BoxCollider>();
             if (originalCollider != null)
             {
@@ -14,17 +13,13 @@ namespace DoomahLevelLoader.UnityComponents
                 instantiatedCollider.center = originalCollider.center;
                 instantiatedCollider.size = new Vector3(originalCollider.size.z, originalCollider.size.y, originalCollider.size.x);
                 
-                // Get the rotation of the original object
                 Quaternion originalRotation = transform.rotation;
 
-                // Add 90 degrees to the Y-axis rotation
                 Quaternion newRotation = Quaternion.Euler(0, originalRotation.eulerAngles.y + 90, 0);
 
-                // Apply the new rotation to the instantiated object
                 instantiatedObject.transform.rotation = newRotation;
 				instantiatedObject.AddComponent<BlockerUpdater>();
 				
-				// Destroy the original collider
                 Destroy(originalCollider);
             }
             else
@@ -53,13 +48,11 @@ namespace DoomahLevelLoader.UnityComponents
 		{
 			bool allEnemiesDead = true;
 
-			// Check siblings
 			Transform parent = transform.parent;
 			if (parent != null)
 			{
 				foreach (Transform sibling in parent)
 				{
-					// Skip processing if the sibling has WaveComponent script
 					if (sibling.GetComponent<WaveComponent>() != null)
 						continue;
 
@@ -72,15 +65,13 @@ namespace DoomahLevelLoader.UnityComponents
 				}
 			}
 
-			// Check parent's grandchildren
 			if (allEnemiesDead && parent != null)
 			{
 				foreach (Transform grandchild in parent)
 				{
-					// Check if the parent of the grandchildren has a WaveComponent
 					if (grandchild.parent != null && grandchild.parent.GetComponent<WaveComponent>() != null)
 					{
-						continue; // Skip processing if parent has WaveComponent
+						continue;
 					}
 
 					foreach (Transform child in grandchild)
@@ -97,7 +88,6 @@ namespace DoomahLevelLoader.UnityComponents
 				}
 			}
 
-			// Deactivate the instantiated object if all enemies are dead
 			if (allEnemiesDead)
 			{
 				gameObject.SetActive(false);
