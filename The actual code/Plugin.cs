@@ -14,7 +14,6 @@ namespace DoomahLevelLoader
     public class Plugin : BaseUnityPlugin
     {
         private AssetBundle terminal;
-        private bool terminalInstantiated = false;
         private Shader loadedShader;
 		public static bool IsCustomLevel = false;
         private static Plugin _instance;
@@ -34,23 +33,21 @@ namespace DoomahLevelLoader
 
             Loaderscene.scenePath = Loaderscene.ExtractScene();
 			
-            SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.sceneUnloaded += OnSceneUnloaded;
-			
+            SceneManager.sceneLoaded += OnSceneLoaded;			
 			await ShaderManager.LoadShaders();
         }
 
         private void OnDestroy()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
-            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (SceneHelper.CurrentScene == "uk_construct")
             {
-                terminalInstantiated = false; 
+				InstantiateTerminal();
+				Debug.Log("Is scene alright parthner");
             }
             if (scene.path == Loaderscene.scenePath)
             {
@@ -72,23 +69,6 @@ namespace DoomahLevelLoader
 			{
 				IsCustomLevel = false;
 			}
-        }
-
-        private void OnSceneUnloaded(Scene scene)
-        {
-            if (SceneHelper.CurrentScene == "uk_construct")
-            {
-                terminalInstantiated = false; 
-            }
-        }
-
-        private void Update()
-        {
-            if (SceneHelper.CurrentScene == "uk_construct" && terminal != null && !terminalInstantiated)
-            {
-                InstantiateTerminal();
-                terminalInstantiated = true;
-            }
         }
 
 		private void InstantiateTerminal()
