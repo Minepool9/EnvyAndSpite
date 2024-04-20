@@ -51,8 +51,7 @@ namespace DoomahLevelLoader
             Discord.onClick.AddListener(OnDiscordButtonClick);
         }
 		
-		
-	    private void UpdateLevelPicture()
+		private void UpdateLevelPicture()
 		{
 			string bundleFolderPath = Loaderscene.GetCurrentBundleFolderPath();
 
@@ -64,13 +63,25 @@ namespace DoomahLevelLoader
 					string imagePath = imageFiles[0];
 					Texture2D tex = LoadTextureFromFile(imagePath);
 					if (tex != null)
-					{	
+					{
 						tex.filterMode = FilterMode.Point;
 						Levelpicture.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
+						FrownyFace.gameObject.SetActive(false);
+						Levelpicture.color = Color.white;
 					}
 				}
+				else
+				{
+					FrownyFace.gameObject.SetActive(true);
+					Levelpicture.color = new Color(1f, 1f, 1f, 0f);
+				}
+			}
+			else
+			{
+				Debug.LogError("Bundle folder path is null or empty.");
 			}
 		}
+
 		
 		private Texture2D LoadTextureFromFile(string path)
 		{
