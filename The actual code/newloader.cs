@@ -41,17 +41,6 @@ namespace DoomahLevelLoader
 			}
 		}
 
-
-        private static bool IsZipFile(string filePath)
-        {
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            {
-                byte[] header = new byte[4];
-                fs.Read(header, 0, 4);
-                return BitConverter.ToUInt32(header, 0) == 0x504B0304;
-            }
-        }
-
         private static void LoadAssetBundle(string folderPath)
         {
             string[] bundleFiles = Directory.GetFiles(folderPath, "*.bundle");
