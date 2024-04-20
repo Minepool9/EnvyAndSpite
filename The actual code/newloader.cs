@@ -12,6 +12,7 @@ namespace DoomahLevelLoader
     {
         private static List<AssetBundle> loadedAssetBundles = new List<AssetBundle>();
         private static int currentAssetBundleIndex = 0;
+		private static List<string> bundleFolderPaths = new List<string>();
 
         public static string LoadedSceneName { get; private set; }
 
@@ -40,21 +41,31 @@ namespace DoomahLevelLoader
 				LoadAssetBundle(levelFolderPath);
 			}
 		}
+		
+		private static void LoadAssetBundle(string folderPath)
+		{
+			string[] bundleFiles = Directory.GetFiles(folderPath, "*.bundle");
 
-        private static void LoadAssetBundle(string folderPath)
-        {
-            string[] bundleFiles = Directory.GetFiles(folderPath, "*.bundle");
-
-            foreach (string bundleFile in bundleFiles)
-            {
-                AssetBundle assetBundle = AssetBundle.LoadFromFile(bundleFile);
-                if (assetBundle != null)
-                {
-                    loadedAssetBundles.Add(assetBundle);
-                }
-            }
-        }
-
+			foreach (string bundleFile in bundleFiles)
+			{
+				AssetBundle assetBundle = AssetBundle.LoadFromFile(bundleFile);
+				if (assetBundle != null)
+				{
+					loadedAssetBundles.Add(assetBundle);
+					bundleFolderPaths.Add(Path.GetDirectoryName(bundleFile));
+				}
+			}
+		}
+		
+		public static string GetCurrentBundleFolderPath()
+		{
+			if (currentAssetBundleIndex >= 0 && currentAssetBundleIndex < bundleFolderPaths.Count)
+			{
+				return bundleFolderPaths[currentAssetBundleIndex];
+			}
+			return null;
+		}
+		
         public static void SelectAssetBundle(int index)
         {
             if (index >= 0 && index < loadedAssetBundles.Count)

@@ -42,13 +42,44 @@ namespace DoomahLevelLoader
 
             gofowardinlist.onClick.AddListener(OnGoForwardButtonClick);
             gobackinlist.onClick.AddListener(OnGoBackButtonClick);
-
+			
+			Levelpicture.color = Color.white;
+			
             UpdateLevelName();
+			UpdateLevelPicture();
 
             Discord.onClick.AddListener(OnDiscordButtonClick);
         }
+		
+		
+	    private void UpdateLevelPicture()
+		{
+			string bundleFolderPath = Loaderscene.GetCurrentBundleFolderPath();
 
-
+			if (!string.IsNullOrEmpty(bundleFolderPath))
+			{
+				string[] imageFiles = Directory.GetFiles(bundleFolderPath, "*.png");
+				if (imageFiles.Length > 0)
+				{
+					string imagePath = imageFiles[0];
+					Texture2D tex = LoadTextureFromFile(imagePath);
+					if (tex != null)
+					{	
+						tex.filterMode = FilterMode.Point;
+						Levelpicture.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
+					}
+				}
+			}
+		}
+		
+		private Texture2D LoadTextureFromFile(string path)
+		{
+			byte[] fileData = File.ReadAllBytes(path);
+			Texture2D texture = new Texture2D(2, 2);
+			texture.LoadImage(fileData);
+			return texture;
+		}
+		
         private void OnLoadButtonClick()
         {
             Loaderscene.Loadscene();
@@ -59,6 +90,7 @@ namespace DoomahLevelLoader
             Loaderscene.MoveToNextAssetBundle();
 			Loaderscene.ExtractSceneName();
             UpdateLevelName();
+			UpdateLevelPicture();
         }
 
         private void OnGoBackButtonClick()
@@ -66,6 +98,7 @@ namespace DoomahLevelLoader
             Loaderscene.MoveToPreviousAssetBundle();
 			Loaderscene.ExtractSceneName();
             UpdateLevelName();
+			UpdateLevelPicture();
         }
 
         private void OnDiscordButtonClick()
