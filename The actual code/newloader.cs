@@ -33,14 +33,23 @@ namespace DoomahLevelLoader
 				string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(doomahFile);
 				string levelFolderPath = Path.Combine(unpackedLevelsPath, fileNameWithoutExtension);
 
-				if (!Directory.Exists(levelFolderPath))
+				try
 				{
-					ZipFile.ExtractToDirectory(doomahFile, levelFolderPath);
-				}
+					if (!Directory.Exists(levelFolderPath))
+					{
+						ZipFile.ExtractToDirectory(doomahFile, levelFolderPath);
+					}
 
-				LoadAssetBundle(levelFolderPath);
+					LoadAssetBundle(levelFolderPath);
+				}
+				catch (Exception ex)
+				{
+					string fileName = Path.GetFileName(doomahFile);
+					Debug.LogError($"Failed to extract {fileName} ! , Please Uninstall map or ask creator to update to 1.3.0!");
+				}
 			}
 		}
+
 		
 		private static void LoadAssetBundle(string folderPath)
 		{
