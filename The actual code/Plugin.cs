@@ -44,6 +44,7 @@ namespace DoomahLevelLoader
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
+			Loaderscene.DeleteUnpackedLevelsFolder();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

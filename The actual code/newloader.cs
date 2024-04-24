@@ -42,13 +42,37 @@ namespace DoomahLevelLoader
 
 					LoadAssetBundle(levelFolderPath);
 				}
-				catch (Exception ex)
+				catch
 				{
 					string fileName = Path.GetFileName(doomahFile);
 					Debug.LogError($"Failed to extract {fileName} ! , Please Uninstall map or ask creator to update to 1.3.0!");
 				}
 			}
 		}
+		
+		public static void DeleteUnpackedLevelsFolder()
+        {
+            string executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string directoryPath = Path.GetDirectoryName(executablePath);
+            string unpackedLevelsPath = Path.Combine(directoryPath, "UnpackedLevels");
+
+            if (Directory.Exists(unpackedLevelsPath))
+            {
+                try
+                {
+                    Directory.Delete(unpackedLevelsPath, true);
+                    Debug.Log("UnpackedLevels folder deleted successfully.");
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Failed to delete UnpackedLevels folder: {ex.Message}");
+                }
+            }
+            else
+            {
+                Debug.Log("UnpackedLevels folder does not exist.");
+            }
+        }
 
 		
 		private static void LoadAssetBundle(string folderPath)
