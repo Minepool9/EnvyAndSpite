@@ -73,6 +73,45 @@ namespace DoomahLevelLoader
                 Debug.Log("UnpackedLevels folder does not exist.");
             }
         }
+		
+		public static void Refresh()
+		{
+			string executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+			string directoryPath = Path.GetDirectoryName(executablePath);
+			string unpackedLevelsPath = Path.Combine(directoryPath, "UnpackedLevels");
+
+			if (!Directory.Exists(unpackedLevelsPath))
+			{
+				Directory.CreateDirectory(unpackedLevelsPath);
+			}
+
+			string[] doomahFiles = Directory.GetFiles(directoryPath, "*.doomah");
+			foreach (string doomahFile in doomahFiles)
+			{
+				string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(doomahFile);
+				string levelFolderPath = Path.Combine(unpackedLevelsPath, fileNameWithoutExtension);
+
+				try
+				{
+					if (!Directory.Exists(levelFolderPath))
+					{
+						ZipFile.ExtractToDirectory(doomahFile, levelFolderPath);
+					}
+
+					if (!bundleFolderPaths.Contains(levelFolderPath))
+					{
+						LoadAssetBundle(levelFolderPath);
+					}
+				}
+				catch
+				{
+					string fileName = Path.GetFileName(doomahFile);
+					Debug.LogError($"Failed to extract {fileName} ! , Please Uninstall map or ask creator to update to 1.3.0!");
+				}
+			}
+		}
+
+
 
 		
 		private static void LoadAssetBundle(string folderPath)
