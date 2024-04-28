@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Diagnostics;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 using BepInEx;
 
 namespace DoomahLevelLoader
@@ -45,7 +48,7 @@ namespace DoomahLevelLoader
 				catch
 				{
 					string fileName = Path.GetFileName(doomahFile);
-					Debug.LogError($"Failed to extract {fileName} ! , Please Uninstall map or ask creator to update to 1.3.0!");
+					UnityEngine.Debug.LogError($"Failed to extract {fileName} ! , Please Uninstall map or ask creator to update to 1.3.0!");
 				}
 			}
 		}
@@ -61,16 +64,16 @@ namespace DoomahLevelLoader
                 try
                 {
                     Directory.Delete(unpackedLevelsPath, true);
-                    Debug.Log("UnpackedLevels folder deleted successfully.");
+                    UnityEngine.Debug.Log("UnpackedLevels folder deleted successfully.");
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"Failed to delete UnpackedLevels folder: {ex.Message}");
+                    UnityEngine.Debug.LogError($"Failed to delete UnpackedLevels folder: {ex.Message}");
                 }
             }
             else
             {
-                Debug.Log("UnpackedLevels folder does not exist.");
+                UnityEngine.Debug.Log("UnpackedLevels folder does not exist.");
             }
         }
 		
@@ -106,7 +109,7 @@ namespace DoomahLevelLoader
 				catch
 				{
 					string fileName = Path.GetFileName(doomahFile);
-					Debug.LogError($"Failed to extract {fileName} ! , Please Uninstall map or ask creator to update to 1.3.0!");
+					UnityEngine.Debug.LogError($"Failed to extract {fileName} ! , Please Uninstall map or ask creator to update to 1.3.0!");
 				}
 			}
 		}
@@ -182,5 +185,30 @@ namespace DoomahLevelLoader
         {
             currentAssetBundleIndex = (currentAssetBundleIndex - 1 + loadedAssetBundles.Count) % loadedAssetBundles.Count;
         }
+		
+		public static void OpenFilesFolder()
+		{
+			string executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+			string directoryPath = Path.GetDirectoryName(executablePath);
+
+			switch (Application.platform)
+			{
+				case RuntimePlatform.WindowsEditor:
+				case RuntimePlatform.WindowsPlayer:
+					Process.Start("explorer.exe", directoryPath.Replace("/", "\\"));
+					break;
+				case RuntimePlatform.OSXEditor:
+				case RuntimePlatform.OSXPlayer:
+					Process.Start("open", directoryPath);
+					break;
+				case RuntimePlatform.LinuxEditor:
+				case RuntimePlatform.LinuxPlayer:
+					Process.Start("xdg-open", directoryPath);
+					break;
+				default:
+					UnityEngine.Debug.LogWarning("BROTHER WHAT IS YOUR OS?????");
+					break;
+			}
+		}
     }
 }

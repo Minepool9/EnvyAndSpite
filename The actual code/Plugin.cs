@@ -52,8 +52,11 @@ namespace DoomahLevelLoader
             if (SceneHelper.CurrentScene == "uk_construct")
             {
 				terminalInstantiated = false;
-				Debug.Log("Is scene alright parthner");
             }
+			if (SceneHelper.CurrentScene == "Main Menu")
+			{
+				InstantiateEnvyScreen();
+			}
             if (scene.name == Loaderscene.LoadedSceneName)
             {
                 SceneHelper.CurrentScene = SceneManager.GetActiveScene().name;
@@ -81,6 +84,10 @@ namespace DoomahLevelLoader
             {
                 terminalInstantiated = false; 
             }
+			if (SceneHelper.CurrentScene == "Main Menu")
+			{
+				InstantiateEnvyScreen();
+			}
         }
 		
         public static void FixVariables()
@@ -97,6 +104,30 @@ namespace DoomahLevelLoader
             }
         }
 		
+		private void InstantiateEnvyScreen()
+		{
+			GameObject envyScreenPrefab = terminal.LoadAsset<GameObject>("assets/envyscreen.prefab");
+
+			if (envyScreenPrefab == null)
+			{
+				Debug.LogError("EnvyScreen prefab not found in the terminal bundle.");
+				return;
+			}
+
+			GameObject canvasObject = GameObject.Find("/Canvas/Main Menu (1)");
+			if (canvasObject == null)
+			{
+				Debug.LogError("Canvas GameObject not found in the scene.");
+				return;
+			}
+
+			GameObject instantiatedObject = Instantiate(envyScreenPrefab);
+
+			instantiatedObject.transform.SetParent(canvasObject.transform, false);
+			instantiatedObject.transform.localPosition = Vector3.zero;
+			instantiatedObject.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
+		}
+
 		private void InstantiateTerminal()
 		{
 			var shaderHandle = Addressables.LoadAssetAsync<Shader>("Assets/Shaders/Main/ULTRAKILL-vertexlit.shader");
@@ -107,7 +138,7 @@ namespace DoomahLevelLoader
 
 			loadedShader = shaderHandle.Result;
 
-			GameObject instantiatedterminal = terminal.LoadAsset<GameObject>("assets/custom/levelloadterminal.prefab");
+			GameObject instantiatedterminal = terminal.LoadAsset<GameObject>("assets/levelloadterminal.prefab");
 			if (instantiatedterminal == null)
 				return;
 

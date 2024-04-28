@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using TMPro;
 
 namespace DoomahLevelLoader
 {
@@ -10,13 +11,13 @@ namespace DoomahLevelLoader
     {
         private static EnvyandSpiteterimal instance;
 
-        public Text levelname;
-        public Text loadbutton;
+        public TextMeshProUGUI levelname;
+        public TextMeshProUGUI loadbutton;
         public Button load;
         public Button gofowardinlist;
         public Button gobackinlist;
         public Image Levelpicture;
-        public Text FrownyFace;
+        public TextMeshProUGUI FrownyFace;
         public Button Discord;
 
         public static EnvyandSpiteterimal Instance
