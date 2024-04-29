@@ -8,6 +8,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using BepInEx;
+using UnityEngine.UI;
+using TMPro;
 
 namespace DoomahLevelLoader
 {
@@ -210,5 +212,53 @@ namespace DoomahLevelLoader
 					break;
 			}
 		}
+		
+		public static void UpdateLevelPicture(Image levelPicture, TextMeshProUGUI frownyFace, bool getFirstBundle = true)
+		{
+			string bundleFolderPath = "";
+
+			if (getFirstBundle)
+			{
+				bundleFolderPath = GetCurrentBundleFolderPath();
+			}
+			else
+			{
+				// yet to implment
+			}
+
+			if (!string.IsNullOrEmpty(bundleFolderPath))
+			{
+				string[] imageFiles = Directory.GetFiles(bundleFolderPath, "*.png");
+				if (imageFiles.Length > 0)
+				{
+					string imagePath = imageFiles[0];
+					Texture2D tex = LoadTextureFromFile(imagePath);
+					if (tex != null)
+					{
+						tex.filterMode = FilterMode.Point;
+						levelPicture.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
+						frownyFace.gameObject.SetActive(false);
+						levelPicture.color = Color.white;
+					}
+				}
+				else
+				{
+					frownyFace.gameObject.SetActive(true);
+					levelPicture.color = new Color(1f, 1f, 1f, 0f);
+				}
+			}
+			else
+			{
+				UnityEngine.Debug.LogError("Bundle folder path is null or empty.");
+			}
+		}
+
+		private static Texture2D LoadTextureFromFile(string path)
+		{
+			byte[] fileData = File.ReadAllBytes(path);
+			Texture2D texture = new Texture2D(2, 2);
+			texture.LoadImage(fileData);
+			return texture;
+		}	
     }
 }

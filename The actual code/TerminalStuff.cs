@@ -47,51 +47,11 @@ namespace DoomahLevelLoader
 			Levelpicture.color = Color.white;
 			
             UpdateLevelName();
-			UpdateLevelPicture();
+			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace, true);
 
             Discord.onClick.AddListener(OnDiscordButtonClick);
         }
-		
-		private void UpdateLevelPicture()
-		{
-			string bundleFolderPath = Loaderscene.GetCurrentBundleFolderPath();
 
-			if (!string.IsNullOrEmpty(bundleFolderPath))
-			{
-				string[] imageFiles = Directory.GetFiles(bundleFolderPath, "*.png");
-				if (imageFiles.Length > 0)
-				{
-					string imagePath = imageFiles[0];
-					Texture2D tex = LoadTextureFromFile(imagePath);
-					if (tex != null)
-					{
-						tex.filterMode = FilterMode.Point;
-						Levelpicture.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
-						FrownyFace.gameObject.SetActive(false);
-						Levelpicture.color = Color.white;
-					}
-				}
-				else
-				{
-					FrownyFace.gameObject.SetActive(true);
-					Levelpicture.color = new Color(1f, 1f, 1f, 0f);
-				}
-			}
-			else
-			{
-				Debug.LogError("Bundle folder path is null or empty.");
-			}
-		}
-
-		
-		private Texture2D LoadTextureFromFile(string path)
-		{
-			byte[] fileData = File.ReadAllBytes(path);
-			Texture2D texture = new Texture2D(2, 2);
-			texture.LoadImage(fileData);
-			return texture;
-		}
-		
         private void OnLoadButtonClick()
         {
             Loaderscene.Loadscene();
@@ -102,7 +62,7 @@ namespace DoomahLevelLoader
             Loaderscene.MoveToNextAssetBundle();
 			Loaderscene.ExtractSceneName();
             UpdateLevelName();
-			UpdateLevelPicture();
+			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace, true);
         }
 
         private void OnGoBackButtonClick()
@@ -110,7 +70,7 @@ namespace DoomahLevelLoader
             Loaderscene.MoveToPreviousAssetBundle();
 			Loaderscene.ExtractSceneName();
             UpdateLevelName();
-			UpdateLevelPicture();
+			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace, true);
         }
 
         private void OnDiscordButtonClick()

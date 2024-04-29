@@ -54,4 +54,17 @@ namespace DoomahLevelLoader
 			MainMenuAgony.isAgonyOpen = false;
         }
     }
+	
+	public class DropdownHandler : MonoBehaviour
+	{
+		public Dropdown dropdown;
+
+		public void OnDropdownValueChanged(int index)
+		{
+			int selectedDifficulty = index;
+
+			MonoSingleton<PrefsManager>.Instance.SetInt("difficulty", selectedDifficulty);
+		}
+	}
+
 }
