@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using TMPro;
 
 namespace DoomahLevelLoader
 {
@@ -15,6 +16,7 @@ namespace DoomahLevelLoader
         public GameObject LevelsMenu;
 		public GameObject LevelsButton;
 		public Button Goback;
+		public TextMeshProUGUI FuckingPleaseWait;
 
         public static EnvyLoaderMenu Instance
         {

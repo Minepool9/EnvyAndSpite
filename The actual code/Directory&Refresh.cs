@@ -40,8 +40,8 @@ namespace DoomahLevelLoader
 		
 		private void Refreshaction()
 		{
-			Loaderscene.Refresh();
-		}		
+			_ = Loaderscene.Refresh();
+		}
 		
 		private void DirectoryOpen()
 		{

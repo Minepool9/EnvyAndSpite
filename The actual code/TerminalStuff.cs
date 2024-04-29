@@ -18,6 +18,7 @@ namespace DoomahLevelLoader
         public Button gobackinlist;
         public Image Levelpicture;
         public TextMeshProUGUI FrownyFace;
+        public TextMeshProUGUI FuckingPleaseWait;
         public Button Discord;
 
         public static EnvyandSpiteterimal Instance

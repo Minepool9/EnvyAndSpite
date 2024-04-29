@@ -25,26 +25,25 @@ namespace DoomahLevelLoader
         private async Task Awake()
         {
             Logger.LogInfo("doomahreal.ultrakill.levelloader is loaded!");
-            Loaderscene.Setup();
             terminal = Loader.LoadTerminal();
 			
             _instance = this;
 
             Harmony val = new Harmony("doomahreal.ultrakill.levelloader");
             val.PatchAll();
-			
-			Loaderscene.ExtractSceneName();
-			
+						
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;		
 			await ShaderManager.LoadShaders();
+			await Loaderscene.Setup();
+			Loaderscene.ExtractSceneName();
         }
 
-        private void OnDestroy()
+        private async void OnDestroy()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
-			Loaderscene.DeleteUnpackedLevelsFolder();
+			await Loaderscene.DeleteUnpackedLevelsFolder();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

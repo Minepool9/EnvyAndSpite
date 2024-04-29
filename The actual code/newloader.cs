@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
-using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using BepInEx;
@@ -21,7 +21,7 @@ namespace DoomahLevelLoader
 
         public static string LoadedSceneName { get; private set; }
 
-		public static void Setup()
+		public static async Task Setup()
 		{
 			string executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
 			string directoryPath = Path.GetDirectoryName(executablePath);
@@ -42,20 +42,20 @@ namespace DoomahLevelLoader
 				{
 					if (!Directory.Exists(levelFolderPath))
 					{
-						ZipFile.ExtractToDirectory(doomahFile, levelFolderPath);
+						await Task.Run(() => ZipFile.ExtractToDirectory(doomahFile, levelFolderPath));
 					}
 
-					LoadAssetBundle(levelFolderPath);
+					_ = LoadAssetBundle(levelFolderPath);
 				}
 				catch
 				{
 					string fileName = Path.GetFileName(doomahFile);
-					UnityEngine.Debug.LogError($"Failed to extract {fileName} ! , Please Uninstall map or ask creator to update to 1.3.0!");
+					UnityEngine.Debug.LogError($"Failed to extract {fileName}! Please Uninstall map or ask creator to update to 1.3.0!");
 				}
 			}
 		}
 		
-		public static void DeleteUnpackedLevelsFolder()
+        public static async Task DeleteUnpackedLevelsFolder()
         {
             string executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string directoryPath = Path.GetDirectoryName(executablePath);
@@ -65,7 +65,7 @@ namespace DoomahLevelLoader
             {
                 try
                 {
-                    Directory.Delete(unpackedLevelsPath, true);
+                    await Task.Run(() => Directory.Delete(unpackedLevelsPath, true));
                     UnityEngine.Debug.Log("UnpackedLevels folder deleted successfully.");
                 }
                 catch (Exception ex)
@@ -79,61 +79,38 @@ namespace DoomahLevelLoader
             }
         }
 		
-		public static void Refresh()
-		{
-			string executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-			string directoryPath = Path.GetDirectoryName(executablePath);
-			string unpackedLevelsPath = Path.Combine(directoryPath, "UnpackedLevels");
+        public static async Task Refresh()
+        {
+            foreach (var bundle in loadedAssetBundles)
+            {
+                bundle.Unload(true);
+            }
+            loadedAssetBundles.Clear();
+            bundleFolderPaths.Clear();
 
-			if (!Directory.Exists(unpackedLevelsPath))
-			{
-				Directory.CreateDirectory(unpackedLevelsPath);
-			}
+            await DeleteUnpackedLevelsFolder();
 
-			string[] doomahFiles = Directory.GetFiles(directoryPath, "*.doomah");
-			foreach (string doomahFile in doomahFiles)
-			{
-				string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(doomahFile);
-				string levelFolderPath = Path.Combine(unpackedLevelsPath, fileNameWithoutExtension);
+            _ = Setup();
+        }
 
-				try
-				{
-					if (!Directory.Exists(levelFolderPath))
-					{
-						ZipFile.ExtractToDirectory(doomahFile, levelFolderPath);
-					}
-
-					if (!bundleFolderPaths.Contains(levelFolderPath))
-					{
-						LoadAssetBundle(levelFolderPath);
-					}
-				}
-				catch
-				{
-					string fileName = Path.GetFileName(doomahFile);
-					UnityEngine.Debug.LogError($"Failed to extract {fileName} ! , Please Uninstall map or ask creator to update to 1.3.0!");
-				}
-			}
-		}
-
-
-
-		
-		private static void LoadAssetBundle(string folderPath)
+		public static async Task LoadAssetBundle(string folderPath)
 		{
 			string[] bundleFiles = Directory.GetFiles(folderPath, "*.bundle");
 
 			foreach (string bundleFile in bundleFiles)
 			{
-				AssetBundle assetBundle = AssetBundle.LoadFromFile(bundleFile);
-				if (assetBundle != null)
+				await Task.Run(() =>
 				{
-					loadedAssetBundles.Add(assetBundle);
-					bundleFolderPaths.Add(Path.GetDirectoryName(bundleFile));
-				}
+					AssetBundle assetBundle = AssetBundle.LoadFromFile(bundleFile);
+					if (assetBundle != null)
+					{
+						loadedAssetBundles.Add(assetBundle);
+						bundleFolderPaths.Add(Path.GetDirectoryName(bundleFile));
+					}
+				});
 			}
 		}
-		
+
 		public static string GetCurrentBundleFolderPath()
 		{
 			if (currentAssetBundleIndex >= 0 && currentAssetBundleIndex < bundleFolderPaths.Count)
