@@ -266,5 +266,47 @@ namespace DoomahLevelLoader
 			texture.LoadImage(fileData);
 			return texture;
 		}	
+		
+		public static string GetAssetBundleSize(int index)
+		{
+			if (index >= 0 && index < loadedAssetBundles.Count)
+			{
+				AssetBundle assetBundle = loadedAssetBundles[index];
+				string bundlePath = bundleFolderPaths[index];
+				long fileSize = CalculateFileSize(bundlePath);
+				string fileSizeFormatted = FormatFileSize(fileSize);
+				return fileSizeFormatted;
+			}
+			else
+			{
+				return "Index out of range";
+			}
+		}
+
+		private static long CalculateFileSize(string bundlePath)
+		{
+			long totalSize = 0;
+			string[] files = Directory.GetFiles(bundlePath, "*", SearchOption.AllDirectories);
+			foreach (string file in files)
+			{
+				totalSize += new FileInfo(file).Length;
+			}
+			return totalSize;
+		}
+
+		private static string FormatFileSize(long bytes)
+		{
+			string[] suffixes = { "B", "KB", "MB", "GB", "TB", "PB" };
+			int suffixIndex = 0;
+			double size = bytes;
+
+			while (size >= 1024 && suffixIndex < suffixes.Length - 1)
+			{
+				size /= 1024;
+				suffixIndex++;
+			}
+
+			return $"{Math.Round(size, 2)} {suffixes[suffixIndex]}";
+		}
     }
 }

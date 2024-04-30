@@ -61,6 +61,8 @@ namespace DoomahLevelLoader
 				string bundlePath = Loaderscene.bundleFolderPaths[index];
 
 				Loaderscene.UpdateLevelPicture(levelButtonScript.LevelImageButtonThing,levelButtonScript.NoLevel,false,bundlePath);
+				string Size = Loaderscene.GetAssetBundleSize(index);
+				levelButtonScript.FileSize.text = Size;
 			}
 		}
 		
@@ -88,16 +90,24 @@ namespace DoomahLevelLoader
 			MainMenuAgony.isAgonyOpen = false;
         }
     }
-	
 	public class DropdownHandler : MonoBehaviour
 	{
-		public Dropdown dropdown;
+		public TMP_Dropdown dropdown;
+
+		private const string selectedDifficultyKey = "difficulty";
+		private int savedDifficulty = MonoSingleton<PrefsManager>.Instance.GetInt(selectedDifficultyKey, 2);
+
+		private void Start()
+		{
+			MonoSingleton<PrefsManager>.Instance.SetInt(selectedDifficultyKey, 2);
+			dropdown.value = savedDifficulty;
+			
+			dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+		}
 
 		public void OnDropdownValueChanged(int index)
 		{
-			int selectedDifficulty = index;
-
-			MonoSingleton<PrefsManager>.Instance.SetInt("difficulty", selectedDifficulty);
+			MonoSingleton<PrefsManager>.Instance.SetInt(selectedDifficultyKey, index);
 		}
 	}
 
