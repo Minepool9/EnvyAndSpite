@@ -18,7 +18,7 @@ namespace DoomahLevelLoader
         public Button gobackinlist;
         public Image Levelpicture;
         public TextMeshProUGUI FrownyFace;
-        public TextMeshProUGUI FuckingPleaseWait;
+        public GameObject FuckingPleaseWait;
         public Button Discord;
 
         public static EnvyandSpiteterimal Instance
@@ -51,7 +51,6 @@ namespace DoomahLevelLoader
 			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace);
 
             Discord.onClick.AddListener(OnDiscordButtonClick);
-			FuckingPleaseWait.gameObject.SetActive(false);
         }
 
         private void OnLoadButtonClick()

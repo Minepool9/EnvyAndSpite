@@ -16,7 +16,7 @@ namespace DoomahLevelLoader
         public GameObject LevelsMenu;
 		public GameObject LevelsButton;
 		public Button Goback;
-		public TextMeshProUGUI FuckingPleaseWait;
+		public GameObject FuckingPleaseWait;
 
         public static EnvyLoaderMenu Instance
         {
@@ -40,10 +40,9 @@ namespace DoomahLevelLoader
             MenuOpener.onClick.AddListener(OpenLevelsMenu);
 			Goback.onClick.AddListener(GoBackToMenu);
 			CreateLevels();
-			FuckingPleaseWait.gameObject.SetActive(false);
         }
 		
-		private void CreateLevels()
+		public void CreateLevels()
 		{
 			for (int i = 0; i < Loaderscene.loadedAssetBundles.Count; i++)
 			{
@@ -64,6 +63,15 @@ namespace DoomahLevelLoader
 				Loaderscene.UpdateLevelPicture(levelButtonScript.LevelImageButtonThing,levelButtonScript.NoLevel,false,bundlePath);
 			}
 		}
+		
+		public void ClearContentStuffChildren()
+		{
+			foreach (Transform child in ContentStuff.transform)
+			{
+				Destroy(child.gameObject);
+			}
+		}
+
 
         private void OpenLevelsMenu()
         {

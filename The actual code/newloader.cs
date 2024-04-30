@@ -18,6 +18,7 @@ namespace DoomahLevelLoader
         public static List<AssetBundle> loadedAssetBundles = new List<AssetBundle>();
         public static int currentAssetBundleIndex = 0;
 		public static List<string> bundleFolderPaths = new List<string>();
+		private static EnvyLoaderMenu envyLoaderMenuScript;
 
         public static string LoadedSceneName { get; private set; }
 
@@ -82,41 +83,37 @@ namespace DoomahLevelLoader
 		// dear fucking god what is this logic
 		public static async Task Refresh()
 		{
-			GameObject parentOfFuckingPleaseWait = null;
-
 			EnvyandSpiteterimal envyScript = GameObject.FindObjectOfType<EnvyandSpiteterimal>();
-			if (envyScript != null && envyScript.FuckingPleaseWait != null)
+			if (envyScript != null)
 			{
-				parentOfFuckingPleaseWait = envyScript.FuckingPleaseWait.transform.parent.gameObject;
-				envyScript.FuckingPleaseWait.gameObject.SetActive(true);
+				envyScript.FuckingPleaseWait.SetActive(true);
 			}
 			else
 			{
-				EnvyLoaderMenu envyLoaderMenuScript = GameObject.FindObjectOfType<EnvyLoaderMenu>();
-				if (envyLoaderMenuScript != null && envyLoaderMenuScript.FuckingPleaseWait != null)
+				envyLoaderMenuScript = GameObject.FindObjectOfType<EnvyLoaderMenu>();
+				if (envyLoaderMenuScript != null)
 				{
-					parentOfFuckingPleaseWait = envyLoaderMenuScript.FuckingPleaseWait.transform.parent.gameObject;
-					envyLoaderMenuScript.FuckingPleaseWait.gameObject.SetActive(true);
+					envyLoaderMenuScript.FuckingPleaseWait.SetActive(true);
+					envyLoaderMenuScript.ClearContentStuffChildren();
 				}
 			}
-
-			foreach (var bundle in loadedAssetBundles)
-			{
-				bundle.Unload(true);
-			}
-			loadedAssetBundles.Clear();
-			bundleFolderPaths.Clear();
-
+			
 			await DeleteUnpackedLevelsFolder();
+			List<Task> setupTasks = new List<Task>();
+			setupTasks.Add(Setup());
 
-			await Setup();
+			await Task.WhenAll(setupTasks);
 
-			if (parentOfFuckingPleaseWait != null)
+			if (envyScript != null)
 			{
-				parentOfFuckingPleaseWait.SetActive(false);
+				envyScript.FuckingPleaseWait.SetActive(false);
+			}
+			else if (envyLoaderMenuScript != null)
+			{
+				envyLoaderMenuScript.FuckingPleaseWait.SetActive(false);
+				envyLoaderMenuScript.CreateLevels();
 			}
 		}
-
 
 		public static async Task LoadAssetBundle(string folderPath)
 		{
