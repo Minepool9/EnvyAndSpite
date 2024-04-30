@@ -48,9 +48,10 @@ namespace DoomahLevelLoader
 			Levelpicture.color = Color.white;
 			
             UpdateLevelName();
-			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace, true);
+			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace);
 
             Discord.onClick.AddListener(OnDiscordButtonClick);
+			FuckingPleaseWait.gameObject.SetActive(false);
         }
 
         private void OnLoadButtonClick()
@@ -63,7 +64,7 @@ namespace DoomahLevelLoader
             Loaderscene.MoveToNextAssetBundle();
 			Loaderscene.ExtractSceneName();
             UpdateLevelName();
-			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace, true);
+			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace);
         }
 
         private void OnGoBackButtonClick()
@@ -71,7 +72,7 @@ namespace DoomahLevelLoader
             Loaderscene.MoveToPreviousAssetBundle();
 			Loaderscene.ExtractSceneName();
             UpdateLevelName();
-			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace, true);
+			Loaderscene.UpdateLevelPicture(Levelpicture, FrownyFace);
         }
 
         private void OnDiscordButtonClick()

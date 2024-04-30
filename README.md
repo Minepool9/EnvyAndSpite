@@ -8,7 +8,7 @@ Then run the unity hub exe, register an account with unity and make a personal l
 
 # TUTORIALS 
 
-* [Somewhat outdated tutorial](https://www.youtube.com/watch?v=n5iKxAL-R6U)
+* [NEW updated tutorial for 1.3.2](https://www.youtube.com/watch?v=JUTN1NhvMgE)
 
 * [The user tutorial channel in the discord server](https://discord.gg/9AEcYGpYFX)
 

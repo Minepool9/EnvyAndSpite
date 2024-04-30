@@ -39,7 +39,31 @@ namespace DoomahLevelLoader
         {
             MenuOpener.onClick.AddListener(OpenLevelsMenu);
 			Goback.onClick.AddListener(GoBackToMenu);
+			CreateLevels();
+			FuckingPleaseWait.gameObject.SetActive(false);
         }
+		
+		private void CreateLevels()
+		{
+			for (int i = 0; i < Loaderscene.loadedAssetBundles.Count; i++)
+			{
+				GameObject buttonGO = Instantiate(LevelsButton, ContentStuff.transform);
+				Button button = buttonGO.GetComponent<Button>();
+				int index = i;
+				button.onClick.AddListener(() =>
+				{
+					Loaderscene.currentAssetBundleIndex = index;
+					Loaderscene.ExtractSceneName();
+					Loaderscene.Loadscene();
+				});
+
+				LevelButtonScript levelButtonScript = buttonGO.GetComponent<LevelButtonScript>();
+
+				string bundlePath = Loaderscene.bundleFolderPaths[index];
+
+				Loaderscene.UpdateLevelPicture(levelButtonScript.LevelImageButtonThing,levelButtonScript.NoLevel,false,bundlePath);
+			}
+		}
 
         private void OpenLevelsMenu()
         {

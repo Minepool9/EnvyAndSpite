@@ -18,7 +18,6 @@ namespace DoomahLevelLoader
 		public TextMeshProUGUI Author;
 		public TextMeshProUGUI LevelName;
 		
-
         public static LevelButtonScript Instance
         {
             get

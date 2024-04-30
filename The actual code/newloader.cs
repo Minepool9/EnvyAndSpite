@@ -15,9 +15,9 @@ namespace DoomahLevelLoader
 {
     public static class Loaderscene
     {
-        private static List<AssetBundle> loadedAssetBundles = new List<AssetBundle>();
-        private static int currentAssetBundleIndex = 0;
-		private static List<string> bundleFolderPaths = new List<string>();
+        public static List<AssetBundle> loadedAssetBundles = new List<AssetBundle>();
+        public static int currentAssetBundleIndex = 0;
+		public static List<string> bundleFolderPaths = new List<string>();
 
         public static string LoadedSceneName { get; private set; }
 
@@ -79,19 +79,44 @@ namespace DoomahLevelLoader
             }
         }
 		
-        public static async Task Refresh()
-        {
-            foreach (var bundle in loadedAssetBundles)
-            {
-                bundle.Unload(true);
-            }
-            loadedAssetBundles.Clear();
-            bundleFolderPaths.Clear();
+		// dear fucking god what is this logic
+		public static async Task Refresh()
+		{
+			GameObject parentOfFuckingPleaseWait = null;
 
-            await DeleteUnpackedLevelsFolder();
+			EnvyandSpiteterimal envyScript = GameObject.FindObjectOfType<EnvyandSpiteterimal>();
+			if (envyScript != null && envyScript.FuckingPleaseWait != null)
+			{
+				parentOfFuckingPleaseWait = envyScript.FuckingPleaseWait.transform.parent.gameObject;
+				envyScript.FuckingPleaseWait.gameObject.SetActive(true);
+			}
+			else
+			{
+				EnvyLoaderMenu envyLoaderMenuScript = GameObject.FindObjectOfType<EnvyLoaderMenu>();
+				if (envyLoaderMenuScript != null && envyLoaderMenuScript.FuckingPleaseWait != null)
+				{
+					parentOfFuckingPleaseWait = envyLoaderMenuScript.FuckingPleaseWait.transform.parent.gameObject;
+					envyLoaderMenuScript.FuckingPleaseWait.gameObject.SetActive(true);
+				}
+			}
 
-            _ = Setup();
-        }
+			foreach (var bundle in loadedAssetBundles)
+			{
+				bundle.Unload(true);
+			}
+			loadedAssetBundles.Clear();
+			bundleFolderPaths.Clear();
+
+			await DeleteUnpackedLevelsFolder();
+
+			await Setup();
+
+			if (parentOfFuckingPleaseWait != null)
+			{
+				parentOfFuckingPleaseWait.SetActive(false);
+			}
+		}
+
 
 		public static async Task LoadAssetBundle(string folderPath)
 		{
@@ -190,7 +215,7 @@ namespace DoomahLevelLoader
 			}
 		}
 		
-		public static void UpdateLevelPicture(Image levelPicture, TextMeshProUGUI frownyFace, bool getFirstBundle = true)
+		public static void UpdateLevelPicture(Image levelPicture, TextMeshProUGUI frownyFace, bool getFirstBundle = true, string bundlePath = "")
 		{
 			string bundleFolderPath = "";
 
@@ -200,7 +225,14 @@ namespace DoomahLevelLoader
 			}
 			else
 			{
-				// yet to implment
+				if (!string.IsNullOrEmpty(bundlePath))
+				{
+					bundleFolderPath = bundlePath;
+				}
+				else
+				{
+					return;
+				}
 			}
 
 			if (!string.IsNullOrEmpty(bundleFolderPath))
