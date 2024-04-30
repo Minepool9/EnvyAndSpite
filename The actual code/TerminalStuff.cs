@@ -79,9 +79,41 @@ namespace DoomahLevelLoader
             Application.OpenURL("https://discord.gg/RY8J67neJ9");
         }
 
-        public void UpdateLevelName()
-        {
-            levelname.text = Loaderscene.LoadedSceneName;
-        }
+		public void UpdateLevelName()
+		{
+			string bundleFolderPath = Loaderscene.GetCurrentBundleFolderPath();
+
+			if (string.IsNullOrEmpty(bundleFolderPath))
+			{
+				return;
+			}
+
+			string infoFilePath = Path.Combine(bundleFolderPath, "info.txt");
+
+			if (!File.Exists(infoFilePath))
+			{
+				levelname.text = "Failed to load Level name!";
+				return;
+			}
+
+			try
+			{
+				string[] lines = File.ReadAllLines(infoFilePath);
+
+				if (lines.Length >= 2)
+				{
+					string levelName = lines[1];
+					levelname.text = levelName;
+				}
+				else
+				{
+					levelname.text = "Failed to load Level name!";
+				}
+			}
+			catch
+			{
+				levelname.text = "Failed to load Level name!";
+			}
+		}
     }
 }

@@ -51,6 +51,7 @@ namespace DoomahLevelLoader
             if (SceneHelper.CurrentScene == "uk_construct")
             {
 				terminalInstantiated = false;
+				Loaderscene.currentAssetBundleIndex = 0;
             }
 			if (SceneHelper.CurrentScene == "Main Menu")
 			{
@@ -116,7 +117,6 @@ namespace DoomahLevelLoader
 			GameObject canvasObject = GameObject.Find("/Canvas/Main Menu (1)");
 			if (canvasObject == null)
 			{
-				Debug.LogError("Canvas GameObject not found in the scene.");
 				return;
 			}
 

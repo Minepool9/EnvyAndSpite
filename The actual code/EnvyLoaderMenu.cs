@@ -60,9 +60,37 @@ namespace DoomahLevelLoader
 
 				string bundlePath = Loaderscene.bundleFolderPaths[index];
 
-				Loaderscene.UpdateLevelPicture(levelButtonScript.LevelImageButtonThing,levelButtonScript.NoLevel,false,bundlePath);
+				Loaderscene.UpdateLevelPicture(levelButtonScript.LevelImageButtonThing, levelButtonScript.NoLevel, false, bundlePath);
 				string Size = Loaderscene.GetAssetBundleSize(index);
 				levelButtonScript.FileSize.text = Size;
+
+				string infoFilePath = Path.Combine(bundlePath, "info.txt");
+				if (File.Exists(infoFilePath))
+				{
+					try
+					{
+						string[] lines = File.ReadAllLines(infoFilePath);
+						if (lines.Length >= 2)
+						{
+							levelButtonScript.Author.text = lines[0] ?? "Failed to load Author name!";
+							levelButtonScript.LevelName.text = lines[1] ?? "Failed to load Level name!";
+						}
+						else
+						{
+							levelButtonScript.Author.text = "Failed to load Author name!";
+							levelButtonScript.LevelName.text = "Failed to load Level name!";
+						}
+					}
+					catch
+					{
+						Debug.LogError($"Failed to read info.txt in bundle folder '{bundlePath}'");
+					}
+				}
+				else
+				{
+					levelButtonScript.Author.text = "Failed to load Author name!";
+					levelButtonScript.LevelName.text = "Failed to load Level name!";
+				}
 			}
 		}
 		
@@ -97,7 +125,7 @@ namespace DoomahLevelLoader
 		private const string selectedDifficultyKey = "difficulty";
 		private int savedDifficulty = MonoSingleton<PrefsManager>.Instance.GetInt(selectedDifficultyKey, 2);
 
-		private void Start()
+		private void OnEnable()
 		{
 			MonoSingleton<PrefsManager>.Instance.SetInt(selectedDifficultyKey, 2);
 			dropdown.value = savedDifficulty;
