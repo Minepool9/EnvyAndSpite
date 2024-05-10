@@ -35,7 +35,7 @@ namespace DoomahLevelLoader
 			
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;		
-			__ = Loaderscene.Setup();
+			_ = Loaderscene.Setup();
 			Loaderscene.ExtractSceneName();
         }
 
