@@ -1,6 +1,4 @@
-The actual code/obj/
-The actual code/bin/
-The actual code/lib/
-The actual code/compile.bat
-
-The actual code/mod dll.lnk
+bin/Debug/netstandard2.0
+lib
+obj
+compile.bat
