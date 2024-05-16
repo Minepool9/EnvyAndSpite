@@ -8,6 +8,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Threading.Tasks;
 using Logic;
+using System.Reflection;
 
 namespace DoomahLevelLoader
 {
@@ -24,7 +25,7 @@ namespace DoomahLevelLoader
 
         private void Awake()
         {
-			ShaderManager.LoadShaders();
+			StartCoroutine(ShaderManager.LoadShadersAsync());
             Logger.LogInfo("If you see this, dont panick! because everything is fine :)");
             terminal = Loader.LoadTerminal();
 			
@@ -70,7 +71,7 @@ namespace DoomahLevelLoader
                 {
                     Debug.LogWarning("Main camera not found in the scene.");
                 }		
-				ShaderManager.ApplyShaders(SceneManager.GetActiveScene().GetRootGameObjects());
+				StartCoroutine(ShaderManager.ApplyShadersAsyncContinuously());
             }
 			else
 			{

@@ -16,6 +16,8 @@ Then run the unity hub exe, register an account with unity and make a personal l
 
 # Credits
 
+[Assetripper project](https://github.com/AssetRipper/AssetRipper),[Waffle](https://github.com/wafflethings),[Imnotsimon](https://github.com/ImNotSimon/) all in help of ULTRAextractor (24//05/12 note: not yet out)
+
 eternalunion for helping me alot during this project
 
 me 
