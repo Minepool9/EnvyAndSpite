@@ -1,11 +1,15 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets.ResourceLocators;
-using System.Linq;
-using meshwhatever;
 using UnityEngine.SceneManagement;
 
 public static class ShaderManager
@@ -16,7 +20,10 @@ public static class ShaderManager
     public static IEnumerator LoadShadersAsync()
     {
         AsyncOperationHandle<IResourceLocator> handle = Addressables.InitializeAsync();
-        yield return handle;
+        while (!handle.IsDone)
+        {
+            yield return null;
+        }
 
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
@@ -27,15 +34,25 @@ public static class ShaderManager
                     continue;
 
                 AsyncOperationHandle<Shader> shaderHandle = Addressables.LoadAssetAsync<Shader>(addressEntry);
-                yield return shaderHandle;
+                while (!shaderHandle.IsDone)
+                {
+                    yield return null;
+                }
 
                 if (shaderHandle.Status == AsyncOperationStatus.Succeeded)
                 {
                     Shader ingameShader = shaderHandle.Result;
                     if (ingameShader != null && ingameShader.name != "ULTRAKILL/PostProcessV2")
                     {
-                        shaderDictionary[ingameShader.name] = ingameShader;
+                        if (!shaderDictionary.ContainsKey(ingameShader.name))
+                        {
+                            shaderDictionary[ingameShader.name] = ingameShader;
+                        }
                     }
+                }
+                else
+                {
+                    Debug.LogError("Failed to load shader: " + shaderHandle.OperationException);
                 }
             }
         }
@@ -43,6 +60,11 @@ public static class ShaderManager
         {
             Debug.LogError("Addressables initialization failed: " + handle.OperationException);
         }
+    }
+
+    public static string ModPath()
+    {
+        return Assembly.GetExecutingAssembly().Location.Substring(0, Assembly.GetExecutingAssembly().Location.LastIndexOf(Path.DirectorySeparatorChar));
     }
 
     public static IEnumerator ApplyShadersAsync(GameObject[] allGameObjects)
@@ -97,6 +119,78 @@ public static class ShaderManager
         shaderManagerRunner.StartApplyingShaders();
         yield return null;
     }
+
+    public static void CreateShaderDictionary()
+    {
+        var shaderList = new List<ShaderInfo>();
+
+        foreach (var shader in Resources.FindObjectsOfTypeAll<Shader>())
+        {
+            if (!shaderList.Any(s => s.Name == shader.name))
+            {
+                shaderList.Add(new ShaderInfo { Name = shader.name });
+            }
+        }
+
+        string json = JsonConvert.SerializeObject(shaderList, Formatting.Indented);
+        File.WriteAllText(Path.Combine(ModPath(), "ShaderList.json"), json);
+    }
+
+    public class ShaderInfo
+    {
+        public string Name { get; set; }
+    }
+
+    public static IEnumerator LoadShadersFromDictionaryAsync()
+    {
+        string shaderListPath = Path.Combine(ModPath(), "ShaderList.json");
+        if (File.Exists(shaderListPath))
+        {
+            var shaderDataTask = ReadAllTextAsync(shaderListPath);
+            while (!shaderDataTask.IsCompleted)
+            {
+                yield return null;
+            }
+
+            string json = shaderDataTask.Result;
+            var shaderData = JsonConvert.DeserializeObject<List<ShaderInfo>>(json);
+            var shaderLookup = new Dictionary<string, Shader>();
+            foreach (var shaderInfo in shaderData)
+            {
+                Shader foundShader = Shader.Find(shaderInfo.Name);
+                if (foundShader != null)
+                {
+                    if (!shaderLookup.ContainsKey(shaderInfo.Name))
+                    {
+                        shaderLookup[shaderInfo.Name] = foundShader;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Duplicate shader name found: {shaderInfo.Name}");
+                    }
+                }
+            }
+
+            foreach (var material in Resources.FindObjectsOfTypeAll<Material>())
+            {
+                if (shaderLookup.TryGetValue(material.shader.name, out Shader newShader))
+                {
+                    if (material.shader != newShader)
+                    {
+                        material.shader = newShader;
+                    }
+                }
+            }
+        }
+    }
+
+    private static async Task<string> ReadAllTextAsync(string path)
+    {
+        using (StreamReader reader = new StreamReader(path))
+        {
+            return await reader.ReadToEndAsync();
+        }
+    }
 }
 
 public class ShaderManagerRunner : MonoBehaviour
@@ -113,6 +207,7 @@ public class ShaderManagerRunner : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
 
             yield return ShaderManager.ApplyShadersAsync(SceneManager.GetActiveScene().GetRootGameObjects());
+            yield return ShaderManager.LoadShadersFromDictionaryAsync();
         }
     }
 }
