@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -25,7 +25,8 @@ namespace DoomahLevelLoader
 
         private void Awake()
         {
-			StartCoroutine(ShaderManager.LoadShadersAsync());
+            StartCoroutine(ShaderManager.LoadShadersAsync());
+
             Logger.LogInfo("If you see this, dont panick! because everything is fine :)");
             terminal = Loader.LoadTerminal();
 			
@@ -56,7 +57,8 @@ namespace DoomahLevelLoader
             }
 			if (SceneHelper.CurrentScene == "Main Menu")
 			{
-				InstantiateEnvyScreen();
+				ShaderManager.CreateShaderDictionary();
+                InstantiateEnvyScreen();
 			}
             if (scene.name == Loaderscene.LoadedSceneName)
             {
@@ -70,8 +72,8 @@ namespace DoomahLevelLoader
                 else
                 {
                     Debug.LogWarning("Main camera not found in the scene.");
-                }		
-				StartCoroutine(ShaderManager.ApplyShadersAsyncContinuously());
+                }
+                StartCoroutine(ShaderManager.ApplyShadersAsyncContinuously());
             }
 			else
 			{
@@ -88,7 +90,8 @@ namespace DoomahLevelLoader
 			if (SceneHelper.CurrentScene == "Main Menu")
 			{
 				InstantiateEnvyScreen();
-			}
+                ShaderManager.CreateShaderDictionary();
+            }
         }
 		
         public static void FixVariables()
